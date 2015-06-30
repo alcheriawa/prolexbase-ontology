@@ -66,7 +66,7 @@ public class OntopReasoner {
 		    factory.setImplicitDBConstraints(constr);
 		    
 		    reasoner = (QuestOWL) factory.createReasoner(owlOntology, new SimpleConfiguration());
-		    System.out.println(reasoner);
+		    //System.out.println(reasoner);
 		}
 		catch(Exception e) {
 			System.out.println(e.getMessage());

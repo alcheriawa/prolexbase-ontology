@@ -16,7 +16,7 @@ public class CoreseReasoner {
 			//reasoner = Graph.create(true);
 			Load ld = Load.create(reasoner);
 			ld.load(owlfile);
-			ld.load(rdffile);
+			//ld.load(rdffile);
 			RuleEngine re = RuleEngine.create(reasoner);
 			re.setProfile(RuleEngine.OWL_RL);
 			re.process();

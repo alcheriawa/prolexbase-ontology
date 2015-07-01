@@ -35,7 +35,12 @@
     </head>
     <body>
         <div class="container">
-        	<tiles:insertAttribute name="header" />
+        	<c:set var="pageRef" scope="application">
+			   <tiles:insertAttribute name="pageId" />
+			</c:set>
+			
+			<tiles:insertAttribute name="header" />
+			
         	<tiles:insertAttribute name="menu" />
         
             <tiles:insertAttribute name="body" />

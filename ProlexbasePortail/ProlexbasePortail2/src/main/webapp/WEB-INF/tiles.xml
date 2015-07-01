@@ -13,10 +13,12 @@
 
     <definition name="welcome" extends="site.template">
         <put-attribute name="body"  value="/pages/welcome.jsp" />
+        <put-attribute name="pageId" type="string" value="afficherWelcome"/>
     </definition>
     
     <definition name="usecases" extends="site.template">
         <put-attribute name="body"  value="/pages/usecases.jsp" />
+        <put-attribute name="pageId" type="string" value="useCases"/>
     </definition>
 
 </tiles-definitions>

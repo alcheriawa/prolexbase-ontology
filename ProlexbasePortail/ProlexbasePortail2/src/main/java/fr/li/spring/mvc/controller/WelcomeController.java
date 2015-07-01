@@ -28,8 +28,6 @@ public class WelcomeController {
 	@Autowired
 	private IServiceQueryResult service;
 	
-	private String pageRef = "afficherWelcome";
-	
 	final String initQuery=
 		"PREFIX : <http://www.univ-tours.fr/li/Prolex/Ontology#>\n"
 	  + "PREFIX prolex: <http://www.univ-tours.fr/li/Prolex/data/>\n"		
@@ -54,7 +52,6 @@ public class WelcomeController {
 
     @RequestMapping(value="/afficherWelcome", method = RequestMethod.GET)
     public String afficher(ModelMap pModel) {
-    	pModel.addAttribute("pageRef", pageRef);
     	Map<String,String> plisteMode = new LinkedHashMap<String,String>();
     	plisteMode.put("virtual", "Virtual Graph");
     	plisteMode.put("classic", "Materialized Graph"); //Classic Graph

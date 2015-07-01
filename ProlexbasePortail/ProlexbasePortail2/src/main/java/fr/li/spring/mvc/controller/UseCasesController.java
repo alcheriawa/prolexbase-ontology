@@ -13,13 +13,10 @@ public class UseCasesController {
 	
 	//@Autowired
 	//private IServiceQueryResult service;
-	
-	private String pageRef = "useCases";
 
     @RequestMapping(value="/useCases", method = RequestMethod.GET)
     public String afficher(ModelMap pModel) {
-    	pModel.addAttribute("pageRef", pageRef);
-    	
+    	    	
         return "usecases";
     }
     

@@ -1,0 +1,1 @@
+update derivative_fra set num_eymology=num_prolexeme where table_etymology='prolexeme'

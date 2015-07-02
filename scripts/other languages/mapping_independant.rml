@@ -1,0 +1,401 @@
+@prefix prolex: <http://www.univ-tours.fr/li/Prolex/Ontology#> .
+@prefix : <http://www.univ-tours.fr/li/Prolex/data/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@base <http://www.univ-tours.fr/li/Prolex/Mapping> .
+
+
+#----------------------------------------------
+# The metaconceptual level
+#----------------------------------------------
+<PivotIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/pivot/{NUM_PIVOT}" .
+	
+<PivotIRI2>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/pivot/{NUM_PIVOT2}" .
+	
+<ExistenceIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/Ontology#{ENG_EXISTENCE}Existence" .
+
+<PropernameHypernymIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/Ontology#{ENG_TYPE}" .
+
+<PropernameHypernymIRI2>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/Ontology#{ENG_TYPE2}" .
+
+<Pivot-TypeBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT p.NUM_PIVOT, t.ENG_TYPE FROM pivot2 p, type t WHERE p.NUM_TYPE=t.NUM_TYPE"""] ;
+	rr:subjectMap <PivotIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:type ;
+		rr:objectMap <PropernameHypernymIRI>
+	] .
+
+<Pivot-ExistenceBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT p.NUM_PIVOT, e.ENG_EXISTENCE FROM  pivot2 p, existence e WHERE p.NUM_EXISTENCE=e.NUM_EXISTENCE"""] ;
+	rr:subjectMap <PivotIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:object  prolex:SenseAxis
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:existence ;
+		rr:objectMap <ExistenceIRI>
+	] .
+
+<PrimaryHypernymBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT t1.ENG_TYPE, t2.ENG_TYPE AS ENG_TYPE2 FROM type t1, type t2 WHERE t1.NUM_SUPERTYPE =t2.NUM_TYPE"""] ;
+	rr:subjectMap <PropernameHypernymIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:primaryHypernym ;
+		rr:objectMap <PropernameHypernymIRI2>
+	] .
+
+<SecondaryHypernymBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT t1.ENG_TYPE, t2.ENG_TYPE AS ENG_TYPE2 FROM hyponymy2 h, type t1, type t2 WHERE h.NUM_TYPE=t1.NUM_TYPE AND h.NUM_SUPERTYPE=t2.NUM_SUPERTYPE"""] ;
+	rr:subjectMap <PropernameHypernymIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:secondaryHypernym ;
+		rr:objectMap <PropernameHypernymIRI2>
+	] .
+
+<HypernymBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT FRA_TYPE, ENG_TYPE, NOTE FROM type"""] ;
+	rr:subjectMap <PropernameHypernymIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:object  prolex:PropernameHypernym
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap [
+		      rr:column "FRA_TYPE" ;
+		      rr:language "fr"
+		] ;
+		rr:objectMap [
+		      rr:column "ENG_TYPE" ;
+		      rr:language "en"
+		]
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:comment ;
+		rr:objectMap [ rr:column "NOTE" ]
+	] .
+
+<ExistenceBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT FRA_EXISTENCE, ENG_EXISTENCE, NOTE FROM existence"""] ;
+	rr:subjectMap <ExistenceIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:object prolex:Existence
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap [
+		      rr:column "FRA_EXISTENCE" ;
+		      rr:language "fr"
+		] ;
+		rr:objectMap [
+		      rr:column "ENG_EXISTENCE" ;
+		      rr:language "en"
+		]
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:comment ;
+		rr:objectMap [ rr:column "NOTE" ]
+	] .
+	
+#-------------------------------------------
+# The conceptual level
+#-------------------------------------------
+
+<SynonymyIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/Ontology#{ENG_DIASYSTEM}Synonym" .
+
+<AccessibleIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/Ontology#{ENG_SUBJECTFILE}Accessible" .
+
+<SynSetIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/synset/{NUM_PIVOT}" ;
+	rr:class prolex:SynSet .	
+
+<SynonymBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT NUM_CANONICAL_PIVOT AS NUM_PIVOT, NUM_SYNONYMOUS_PIVOT AS NUM_PIVOT2, ENG_DIASYSTEM  FROM synonymy s, diasystem d WHERE s.NUM_DIASYSTEM=d.NUM_DIASYSTEM"""] ;
+	rr:subjectMap <PivotIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate "<http://www.univ-tours.fr/li/Prolex/Ontology#{ENG_DIASYSTEM}Synonym>" ;
+		rr:objectMap  <PivotIRI2>
+	].
+
+<SynSetBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """(SELECT s.NUM_CANONICAL_PIVOT AS NUM_PIVOT, s.NUM_SYNONYMOUS_PIVOT AS NUM_PIVOT2 FROM synonymy s WHERE s.NUM_CANONICAL_PIVOT NOT IN (SELECT NUM_SYNONYMOUS_PIVOT FROM synonymy)) UNION (SELECT c.NUM_CANONICAL_PIVOT AS NUM_PIVOT, s.NUM_SYNONYMOUS_PIVOT AS NUM_PIVOT2 FROM synonymy s, synonymy c WHERE s.NUM_CANONICAL_PIVOT=c.NUM_SYNONYMOUS_PIVOT)"""] ;
+	rr:subjectMap <SynSetIRI> ;
+	rr:predicateObjectMap [
+		rr:predicate prolex:canonicPivot ;
+		rr:objectMap  <PivotIRI>
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:member ;
+		rr:objectMap  <PivotIRI2>
+	].
+	
+
+<AccessibilityBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT NUM_ARGUMENT1_PIVOT AS NUM_PIVOT, NUM_ARGUMENT2_PIVOT AS NUM_PIVOT2, ENG_SUBJECTFILE  FROM accessibility a, subject_file s WHERE s.NUM_SUBJECTFILE=a.NUM_SUBJECTFILE"""] ;
+	rr:subjectMap <PivotIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate "<http://www.univ-tours.fr/li/Prolex/Ontology#{ENG_SUBJECTFILE}Accessible>" ;
+		rr:objectMap  <PivotIRI2>
+	].
+	
+
+<MeronymBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT NUM_HOLONYMOUS_PIVOT AS NUM_PIVOT, NUM_MERONYMOUS_PIVOT AS NUM_PIVOT2 FROM meronymy"""] ;
+	rr:subjectMap <PivotIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:hasMeronym ;
+		rr:objectMap  <PivotIRI2>
+	].
+
+
+# The linguistic level
+#----------------------------------------------
+
+<LexiconIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/language/{LANGUAGE_NAME}" ;
+	rr:class prolex:Lexicon .
+
+<MorphologyIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/morphology/{MORPHOLOGY_NAME}" ;
+	rr:class prolex:Morphology.
+	
+<AliasCategoryIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/alias-category/{ENG_CATEGORY}" ;
+	rr:class prolex:AliasCategory.	
+
+<DerivativeCategoryIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/derivative-category/{ENG_CATEGORY}" ;
+	rr:class prolex:DerivativeCategory.
+
+<GrammaticalCategoryIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/part-of-speech/{ENG_POS}" ;
+	rr:class prolex:PartOfSpeech.
+
+<CollocationCategoryIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/collocation-category/{ENG_CATEGORY}" ;
+	rr:class prolex:CollocationCategory.
+
+<ConstituantElementIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/constituant-element/{NUM_CONSTITUANT}" ;
+	rr:class prolex:ConstituantElement.
+	
+<ReliabilityCodeIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/reliability-code/{ENG_FREQUENCY}" ;
+	rr:class prolex:ReliabilityCode .
+	
+<LexiconBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT FRA_LANGUAGE, ISO_CODE, ENG_LANGUAGE, ENG_LANGUAGE AS LANGUAGE_NAME, WIKIPEDIA_LINK, SCRIPT1, SCRIPT2 FROM language"""] ;
+	rr:subjectMap <LexiconIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:object  prolex:Lexicon
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap  [ 
+		      rr:column 'FRA_LANGUAGE';
+		      rr:language 'fr'
+		];
+		
+		rr:objectMap  [ 
+		      rr:column 'ENG_LANGUAGE';
+		      rr:language 'en'
+		]
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:languageIdentifier ;
+		rr:objectMap  [ rr:column 'ISO_CODE' ]
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:script ;
+		rr:objectMap  [ rr:column 'SCRIPT1' ]
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:script ;
+		rr:objectMap  [ rr:column 'SCRIPT2' ]
+	] ;
+	
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:seeAlso ;
+		rr:objectMap  [ rr:column 'WIKIPEDIA_LINK' ]
+	] .
+	
+<ReliabilityCodeBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT FRA_FREQUENCY, ENG_FREQUENCY from frequency"""] ;
+	rr:subjectMap <ReliabilityCodeIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap  [ 
+			rr:column 'ENG_FREQUENCY' ;
+			rr:language 'en'
+		];
+			
+		rr:objectMap  [ 
+			rr:column 'FRA_FREQUENCY' ;
+			rr:language 'fr'
+		]
+	] .
+	
+<AliasCategoryBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT * FROM alias_category """] ;
+	rr:subjectMap <AliasCategoryIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap  [
+			  rr:column 'FRA_CATEGORY';
+			  rr:language 'fr'];
+			  
+		rr:objectMap  [
+			  rr:column 'ENG_CATEGORY';
+			  rr:language 'en']
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:comment ;
+		rr:objectMap  [ rr:column 'NOTE']
+	] .
+	
+<DerivativeCategoryBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT dc.FRA_CATEGORY, dc.ENG_CATEGORY, dc.NOTE, pos.ENG_POS FROM derivative_category dc, part_of_speech pos WHERE dc.NUM_POS=pos.NUM_POS"""] ;
+	rr:subjectMap <DerivativeCategoryIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap  [
+			  rr:column 'FRA_CATEGORY';
+			  rr:language 'fr'
+		] ;
+			  
+		rr:objectMap  [
+			  rr:column 'ENG_CATEGORY';
+			  rr:language 'en']
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:comment ;
+		rr:objectMap  [ rr:column 'NOTE']
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:hasPartOfSpeech ;
+		rr:objectMap  <GrammaticalCategoryIRI>
+	] .
+	
+<GrammaticalCategoryBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT FRA_POS, ENG_POS FROM part_of_speech"""] ;
+	rr:subjectMap <GrammaticalCategoryIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap  [
+			  rr:column 'FRA_POS';
+			  rr:language 'fr'
+		];
+		
+		rr:objectMap  [
+			  rr:column 'ENG_POS';
+			  rr:language 'en']
+	] .
+	
+<CollocationCategoryBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT FRA_CATEGORY, ENG_CATEGORY, NOTE FROM collocation_category"""] ;
+	rr:subjectMap <CollocationCategoryIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap  [
+			  rr:column 'ENG_CATEGORY';
+			  rr:language 'en'
+		] ;
+		
+		rr:objectMap  [
+			  rr:column 'FRA_CATEGORY';
+			  rr:language 'fr']
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:comment ;
+		rr:objectMap  [ rr:column 'NOTE']
+	] .
+
+<MorphologyBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT ABBREVIATION AS MORPHOLOGY_NAME, GENDER, NUMBER FROM morphology_fra"""] ;
+	rr:subjectMap <MorphologyIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:grammaticalGender ;
+		rr:objectMap  [ rr:column 'GENDER' ]
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:grammaticalNumber ;
+		rr:objectMap  [ rr:column 'NUMBER' ]
+	] .

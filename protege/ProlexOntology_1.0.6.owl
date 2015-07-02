@@ -1,0 +1,2115 @@
+@prefix : <http://www.univ-tours.fr/li/Prolex/Ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix prolex: <http://www.univ-tours.fr/li/Prolex/data/> .
+@base <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+<http://www.univ-tours.fr/li/Prolex/Ontology> rdf:type owl:Ontology ;
+                                              
+                                              rdfs:label "Prolexbase's ontology"@en ,
+                                                         "Ontologie de Prolexbase"@fr ;
+                                              
+                                              <http://purl.org/dc/terms/creator> "Mouhamad Ndiankho THIAM" ;
+                                              
+                                              owl:versionInfo """Suppression des entités suivantes:
+- Rule
+- AliasiationRule
+- DerivationRule
+- HistoricalExistence
+- ReligiousExistence
+- FictitiousExistence
+- Inflection
+
+Suppression des propriétés suivantes:
+- derivationRule
+- AlisizationRule
+- inflection
+
+Ajout d'entités:
++ SynSet
+
+Ajout d'individus:
++ historicalExistence
++ religiousExistence
++ fictitiousExistence
+
+Ajout de propriétés:
++ member
++ canonicPivot
+
+Ajout de caractéristiques à des propriétés:
++ \"functional\" pour type et existence
++ \"symmetric\" et \"transitive\" pour quasiSynonym, diaphasicSynonym, diachronicSynonym et diastraticSynonym.
++ \"transitve\" et \"assymmetric\" pour meronym et holonym
++ \"inverse functional\" pour member
+
+Renommage:
+accessibility -> accessible
+relativeAccessibility -> relativeAccessible
+.............................................................
+.............................................................
+.............................................................
+rivalAccessibility -> rivalAccessible
+
+Changement du version l'URI de l'ontology
+1.0.2 -> 1.0.3
+
+Ajout de descriptions d'individus:
++ type \"ProperNameHypernym\" pour Association, Astronym et Anthroponym
+
+Ajout de description du vocabulaire
++ propriété \"isDefinedBy\" pour tous les éléments sdu vocabulaire"""@fr ;
+                                              
+                                              rdfs:comment "nothing"@fr ;
+                                              
+                                              skos:note "noting"@fr ;
+                                              
+                                              rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                                              
+                                              owl:priorVersion <http://www.univ-tours.fr/li/Prolex/Ontology/1.0.2> ;
+                                              
+                                              owl:versionIRI <http://www.univ-tours.fr/li/Prolex/Ontology/1.0.6> .
+
+
+#################################################################
+#
+#    Annotation properties
+#
+#################################################################
+
+
+###  http://www.w3.org/2004/02/skos/core#hasTopConcept
+
+skos:hasTopConcept rdf:type owl:AnnotationProperty .
+
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#accessible
+
+:accessible rdf:type owl:ObjectProperty ;
+            
+            rdfs:label "accessible"@en ,
+                       "accessible"@fr ;
+            
+            rdfs:comment "To tell that a pivot is accessibe via another one."@en ,
+                         "Permet de dire qu'un pivot est accessible à partir d'un autre."@fr ;
+            
+            rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+            
+            rdfs:domain :SenseAxis ;
+            
+            rdfs:range :SenseAxis ;
+            
+            rdfs:subPropertyOf :senseAxisRelation .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#antonomasia
+
+:antonomasia rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "antonomasia"@en ,
+                        "antonomasie"@fr ;
+             
+             rdfs:comment "specifies that a common name is nammed with the proper name"@en ,
+                          "Spécifie qu'un nom commun porte ce nom propre."@fr ;
+             
+             rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+             
+             rdfs:range :Antonomasia ;
+             
+             rdfs:domain :Canonical ;
+             
+             rdfs:subPropertyOf :eponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#canonicPivot
+
+:canonicPivot rdf:type owl:FunctionalProperty ,
+                       owl:ObjectProperty ;
+              
+              rdfs:label "canonic pivot"@en ,
+                         "pivot canonique"@fr ;
+              
+              rdfs:comment "indicates the canonic pivot of a synset."@en ,
+                           "Désigne le pivot canonique d'un synset."@fr ,
+                           <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+              
+              rdfs:range :SenseAxis ;
+              
+              rdfs:domain :SynSet ;
+              
+              rdfs:subPropertyOf :member .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#capitalAccessible
+
+:capitalAccessible rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "capital accessibility"@en ,
+                              "accessibilité par capitale"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   rdfs:range :SenseAxis ;
+                   
+                   rdfs:domain :SenseAxis ;
+                   
+                   rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#category
+
+:category rdf:type owl:FunctionalProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:label "category"@en ,
+                     "categorie"@fr ;
+          
+          rdfs:comment "Says that an categorizable element is in some category"@en ,
+                       "permet de dire qu'un élément catégorisable est de telle catégorie"@fr ;
+          
+          rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+          
+          rdfs:range :Category .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#classification
+
+:classification rdf:type owl:ObjectProperty ;
+                
+                rdfs:label "classification"@en ,
+                           "classification"@fr ;
+                
+                rdfs:comment "links between a lexical entry and a Classification element"@en ,
+                             "Lie une entrée lexicale à une entité Classification"@fr ;
+                
+                rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                
+                rdfs:range :Classification ;
+                
+                rdfs:domain :LexicalEntry ;
+                
+                rdfs:subPropertyOf :syntacticBehaviour .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#collocation
+
+:collocation rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "collocation"@en ,
+                        "collocation"@fr ;
+             
+             rdfs:comment "links a lexical entry and another word to make collocation"@en ,
+                          "lie une entré lexicale à un mot pour faire une collocation"@fr ;
+             
+             rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+             
+             rdfs:range :FunctionalWord ;
+             
+             rdfs:domain :LexicalEntry ;
+             
+             rdfs:subPropertyOf :syntacticBehaviour .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#companionAccessible
+
+:companionAccessible rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:label "companion accessibility"@en ,
+                                "accessibilité par compagnon"@fr ;
+                     
+                     rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                     
+                     rdfs:range :SenseAxis ;
+                     
+                     rdfs:domain :SenseAxis ;
+                     
+                     rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#creatorAccessible
+
+:creatorAccessible rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "creator accessibility"@en ,
+                              "accessibilité par créateur"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   rdfs:domain :SenseAxis ;
+                   
+                   rdfs:range :SenseAxis ;
+                   
+                   rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#diachronicSynonym
+
+:diachronicSynonym rdf:type owl:ObjectProperty ,
+                            owl:SymmetricProperty ,
+                            owl:TransitiveProperty ;
+                   
+                   rdfs:label "diacrhonic synonymy"@en ,
+                              "synonymie diachronique"@fr ;
+                   
+                   rdfs:comment "Synonyme par changement de nom : Le Za"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   rdfs:domain :SenseAxis ;
+                   
+                   rdfs:range :SenseAxis ;
+                   
+                   rdfs:subPropertyOf :quasiSynonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#diaphasicSynonym
+
+:diaphasicSynonym rdf:type owl:ObjectProperty ,
+                           owl:SymmetricProperty ,
+                           owl:TransitiveProperty ;
+                  
+                  rdfs:label "diaphasic synonymy"@en ,
+                             "synonymie diaphasique"@fr ;
+                  
+                  rdfs:comment "Synonyme stylistique : Cité des lumières pour dire Paris"@fr ;
+                  
+                  rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                  
+                  rdfs:domain :SenseAxis ;
+                  
+                  rdfs:range :SenseAxis ;
+                  
+                  rdfs:subPropertyOf :quasiSynonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#diastraticSynonym
+
+:diastraticSynonym rdf:type owl:ObjectProperty ,
+                            owl:SymmetricProperty ,
+                            owl:TransitiveProperty ;
+                   
+                   rdfs:label "diastratic synonymy"@en ,
+                              "synonymie diastratique"@fr ;
+                   
+                   rdfs:comment "Synonyme savant: courant Humboldt pour courant du P"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   rdfs:domain :SenseAxis ;
+                   
+                   rdfs:range :SenseAxis ;
+                   
+                   rdfs:subPropertyOf :quasiSynonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#eponym
+
+:eponym rdf:type owl:ObjectProperty ;
+        
+        rdfs:label "eponym"@en ,
+                   "eponyme"@fr ;
+        
+        rdfs:comment "gives an expression that contains the proper name"@en ,
+                     "relie une entrée lexicale à une expression contenant le nom propre"@fr ;
+        
+        rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+        
+        rdfs:domain :Canonical ;
+        
+        rdfs:range :EponymExpression .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#existence
+
+:existence rdf:type owl:FunctionalProperty ,
+                    owl:ObjectProperty ;
+           
+           rdfs:label "existence"@en ,
+                      "existance"@fr ;
+           
+           rdfs:comment "This relation links a pivot to its existence"@en ,
+                        "relie un pivot à son existance"@fr ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+           
+           rdfs:range :Existence ;
+           
+           rdfs:domain :SenseAxis ;
+           
+           rdfs:subPropertyOf :interlingualExternalRef .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#followerAccessible
+
+:followerAccessible rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:label "follower accessibility"@en ,
+                               "accessibilité par élève"@fr ;
+                    
+                    rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                    
+                    rdfs:domain :SenseAxis ;
+                    
+                    rdfs:range :SenseAxis ;
+                    
+                    rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#founderAccessible
+
+:founderAccessible rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "founder accessibility"@en ,
+                              "acessibilité par fondateur"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   rdfs:range :SenseAxis ;
+                   
+                   rdfs:domain :SenseAxis ;
+                   
+                   rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#frequency
+
+:frequency rdf:type owl:FunctionalProperty ,
+                    owl:ObjectProperty ;
+           
+           rdfs:label "frequency"@en ,
+                      "frequence"@fr ;
+           
+           rdfs:comment "Gives the frequency (reliability code) of a lexial entry in that given language"@en ,
+                        "Donne la fréquence d'utilisation dans une langue d'une entrée lexicale."@fr ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+           
+           rdfs:range :ReliabilityCode ;
+           
+           rdfs:domain :Sense .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasAccessibility
+
+:hasAccessibility rdf:type owl:ObjectProperty ;
+                  
+                  rdfs:comment "It's used to link a Lexical Entry to an explicative phrase provided with another prroper name"@en ,
+                               "Elle est utilisée pour lier une entré lexicale à une phrase explicative découlant d'un autre nom propre"@fr ;
+                  
+                  rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                  
+                  rdfs:range :Accessibility ;
+                  
+                  rdfs:domain :LexicalEntry ;
+                  
+                  rdfs:subPropertyOf :syntacticBehaviour .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasAlias
+
+:hasAlias rdf:type owl:ObjectProperty ;
+          
+          rdfs:label "alias"@en ,
+                     "alias"@fr ;
+          
+          rdfs:comment "indicates that a lexical entry has an alias"@en ,
+                       "précise qu'une entrée lexicale a un alias donné."@fr ;
+          
+          rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+          
+          rdfs:range :Alias ;
+          
+          rdfs:domain :Canonical ;
+          
+          rdfs:subPropertyOf :senseRelation .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasConstituant
+
+:hasConstituant rdf:type owl:FunctionalProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:label "constituant"@en ,
+                           "constituant"@fr ;
+                
+                rdfs:comment "Gives the corresponding part of the proper name to use for classification or accessibility"@en ,
+                             "permet de préciser quelle partie du nom propre est concernée par une classification ou une sélection"@fr ;
+                
+                rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                
+                rdfs:domain :Classification ;
+                
+                rdfs:range :ConstituantElement .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasContext
+
+:hasContext rdf:type owl:FunctionalProperty ,
+                     owl:ObjectProperty ;
+            
+            rdfs:label "context"@en ,
+                       "contexte"@fr ;
+            
+            rdfs:comment "gives the context of a classification or an accessibility"@en ,
+                         "renseigne le contexte d'une classification ou d'une accessibilité."@fr ;
+            
+            rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+            
+            rdfs:range :Context .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasDerivative
+
+:hasDerivative rdf:type owl:ObjectProperty ;
+               
+               rdfs:label "derivative"@en ,
+                          "dérivé"@fr ;
+               
+               rdfs:comment "gives a derivative of a lexical entry"@en ,
+                            "attache un mot dérivé d'une entrée lexicale."@fr ;
+               
+               rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+               
+               rdfs:range :Derivative ;
+               
+               rdfs:domain :Sense ;
+               
+               rdfs:subPropertyOf :senseRelation .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasInstance
+
+:hasInstance rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "instance"@en ,
+                        "instance"@fr ;
+             
+             rdfs:comment "links a lexical entry to one of its instances"@en ,
+                          "relie une entrée lexicale à une de ses instances"@en ;
+             
+             rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+             
+             rdfs:range :Form ;
+             
+             rdfs:domain :LexicalEntry .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasLexicon
+
+:hasLexicon rdf:type owl:FunctionalProperty ,
+                     owl:ObjectProperty ;
+            
+            rdfs:label "language"@en ,
+                       "langue"@fr ;
+            
+            rdfs:comment "tells the language of every language-based element"@en ,
+                         "détermine la langue de tout élément du niveau linguistique (LexicalEntry, Collocation, ...)"@fr ;
+            
+            rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+            
+            rdfs:range :Lexicon .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasMeronym
+
+:hasMeronym rdf:type owl:AsymmetricProperty ,
+                     owl:ObjectProperty ,
+                     owl:TransitiveProperty ;
+            
+            rdfs:label "meronym"@en ,
+                       "méronyme"@fr ;
+            
+            rdfs:comment "tells that a pivot englobes another one."@en ,
+                         "Pour dire qu'un pivot contient sémantiquement un autre"@fr ;
+            
+            rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+            
+            rdfs:range :SenseAxis ;
+            
+            rdfs:domain :SenseAxis ;
+            
+            rdfs:subPropertyOf :senseAxisRelation .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasMorphology
+
+:hasMorphology rdf:type owl:FunctionalProperty ,
+                        owl:ObjectProperty ;
+               
+               rdfs:label "morphology"@en ,
+                          "morphologie"@fr ;
+               
+               rdfs:comment "gives the morpology"@en ,
+                            "indique la morphologie"@fr ;
+               
+               rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+               
+               rdfs:range :Morphology .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasPartOfSpeech
+
+:hasPartOfSpeech rdf:type owl:FunctionalProperty ,
+                          owl:ObjectProperty ;
+                 
+                 rdfs:label "part of speech"@en ,
+                            "catégorie grammaticale"@fr ;
+                 
+                 rdfs:comment "Links between an element and it's grammatical category (part of speech)."@en ,
+                              "Relie un élément à sa catégorie grammaticale (partie du discours)"@fr ;
+                 
+                 rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                 
+                 rdfs:range :PartOfSpeech .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasSenseAxis
+
+:hasSenseAxis rdf:type owl:FunctionalProperty ,
+                       owl:ObjectProperty ;
+              
+              rdfs:label "pivot"@en ,
+                         "pivot"@fr ;
+              
+              rdfs:comment "links a lexical entry to its pivot"@en ,
+                           "relie une entrée lexicale à son pivot"@fr ;
+              
+              rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+              
+              rdfs:domain :Sense ;
+              
+              rdfs:range :SenseAxis .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#headquartersAccessible
+
+:headquartersAccessible rdf:type owl:ObjectProperty ;
+                        
+                        rdfs:label "headquarters accessibility"@en ,
+                                   "accessibilité par siège"@fr ;
+                        
+                        rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                        
+                        rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#heirAccessible
+
+:heirAccessible rdf:type owl:ObjectProperty ;
+                
+                rdfs:label "heir accessibility"@en ,
+                           "accessibilité par héritier"@fr ;
+                
+                rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                
+                rdfs:range :SenseAxis ;
+                
+                rdfs:domain :SenseAxis ;
+                
+                rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#holonym
+
+:holonym rdf:type owl:AsymmetricProperty ,
+                  owl:ObjectProperty ,
+                  owl:TransitiveProperty ;
+         
+         rdfs:label "holonym"@en ,
+                    "holonyme"@fr ;
+         
+         rdfs:comment "Tells that a pivot is semantically contained in another one."@en ,
+                      "Pour dire qu'un pivot source est contenu sémantiquement dans un autre pivot cible"@fr ;
+         
+         rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+         
+         rdfs:range :SenseAxis ;
+         
+         rdfs:domain :SenseAxis ;
+         
+         owl:inverseOf :hasMeronym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hypernym
+
+:hypernym rdf:type owl:ObjectProperty ,
+                   owl:TransitiveProperty ;
+          
+          rdfs:label "can be"@en ,
+                     "peut être de type"@fr ;
+          
+          rdfs:comment "Tells that a type admit some as supertype"@en ,
+                       "dire qu'un type a un tel comme supertype"@fr ;
+          
+          rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+          
+          rdfs:range :PropernameHypernym ;
+          
+          rdfs:domain :PropernameHypernym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hyponym
+
+:hyponym rdf:type owl:ObjectProperty ;
+         
+         rdfs:label "hyponym"@en ,
+                    "hyponyme"@fr ;
+         
+         rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+         
+         owl:inverseOf :hypernym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#idiom
+
+:idiom rdf:type owl:ObjectProperty ;
+       
+       rdfs:label "idiom relationship"@en ,
+                  "relation vers une expression idiomatique"@fr ;
+       
+       rdfs:comment "tells that a proper name is in an idiom"@en ,
+                    "dit qu'un nom propre est contenu dans une expression idiomatique"@fr ;
+       
+       rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+       
+       rdfs:domain :Canonical ;
+       
+       rdfs:range :Idiom ;
+       
+       rdfs:subPropertyOf :eponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#interlingualExternalRef
+
+:interlingualExternalRef rdf:type owl:ObjectProperty ;
+                         
+                         rdfs:comment "A super-property for all relationships in the meta-conceptual level"@en ,
+                                      "Propriété mère pour toutes les relations du niveau méta-conceptuel"@fr ;
+                         
+                         rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#isAccessibilityOf
+
+:isAccessibilityOf rdf:type owl:FunctionalProperty ,
+                            owl:ObjectProperty ;
+                   
+                   rdfs:comment "Links an accessibility to its lexical entry."@en ,
+                                "Relie une accessibilité à son entrée lexicale"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   owl:inverseOf :hasAccessibility ;
+                   
+                   rdfs:subPropertyOf :syntacticBehaviour .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#isAliasOf
+
+:isAliasOf rdf:type owl:FunctionalProperty ,
+                    owl:ObjectProperty ;
+           
+           rdfs:comment "links an alias to the aliased lexical entry."@en ,
+                        "relie un alias à l'entrée lexicale aliasée."@fr ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+           
+           owl:inverseOf :hasAlias .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#isDerivativeOf
+
+:isDerivativeOf rdf:type owl:FunctionalProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:comment "links a derivative to its derivant lexical entry."@en ,
+                             "permet de lier un dérivé à l'entrée lexicale dérivant."@fr ;
+                
+                rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                
+                owl:inverseOf :hasDerivative .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#isEponymOf
+
+:isEponymOf rdf:type owl:ObjectProperty ;
+            
+            rdfs:comment "Links an exponym expression to the propername"@en ,
+                         "Relie une expression éponyme au nom propre."@fr ;
+            
+            rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+            
+            owl:inverseOf :eponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#isInstanceOf
+
+:isInstanceOf rdf:type owl:FunctionalProperty ,
+                       owl:ObjectProperty ;
+              
+              rdfs:comment "links an instance to its parent lexical entry"@en ,
+                           "relie une instance à son entrée lexicale génitrice"@fr ;
+              
+              rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+              
+              owl:inverseOf :hasInstance .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#isSenseAxisOf
+
+:isSenseAxisOf rdf:type owl:ObjectProperty ;
+               
+               rdfs:label "prolexem"@en ,
+                          "prolexème"@fr ;
+               
+               rdfs:comment "links a pivot to one of its lexical entries."@en ,
+                            "relation qui relie un pivot à une de ses entrées lexicales"@fr ;
+               
+               rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+               
+               rdfs:range :Sense ;
+               
+               rdfs:domain :SenseAxis ;
+               
+               owl:inverseOf :hasSenseAxis .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#leaderAccessible
+
+:leaderAccessible rdf:type owl:ObjectProperty ;
+                  
+                  rdfs:label "leader accessibility"@en ;
+                  
+                  rdfs:comment "accessibilité par dirigeant politique"@fr ;
+                  
+                  rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                  
+                  rdfs:domain :SenseAxis ;
+                  
+                  rdfs:range :SenseAxis ;
+                  
+                  rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#managerAccessible
+
+:managerAccessible rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "manager accessibility"@en ,
+                              "acessibilité par dirigeant non politique"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   rdfs:domain :SenseAxis ;
+                   
+                   rdfs:range :SenseAxis ;
+                   
+                   rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#member
+
+:member rdf:type owl:InverseFunctionalProperty ,
+                 owl:ObjectProperty ;
+        
+        rdfs:label "member"@en ,
+                   "membre"@fr ;
+        
+        rdfs:comment "Tells that a pivot is member of a synset"@en ,
+                     "Permet de dire qu'un pivot est membre d'un synset"@fr ;
+        
+        rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+        
+        rdfs:range :SenseAxis ;
+        
+        rdfs:domain :SynSet .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#phonetics
+
+:phonetics rdf:type owl:FunctionalProperty ,
+                    owl:ObjectProperty ;
+           
+           rdfs:label "phonetics" ,
+                      "transcription phonétique"@fr ;
+           
+           rdfs:comment "" ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+           
+           rdfs:domain :LexicalEntry ;
+           
+           rdfs:range :Phonetics .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#primaryHypernym
+
+:primaryHypernym rdf:type owl:FunctionalProperty ,
+                          owl:ObjectProperty ;
+                 
+                 rdfs:label "hypernym"@en ,
+                            "hypernym"@fr ;
+                 
+                 rdfs:comment "This is the primary hypernym. It links a type to its supertype."@en ,
+                              "Cette relation représente l'ypéronymie principale. Elle permet de lier des supertypes."@fr ;
+                 
+                 rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                 
+                 rdfs:domain :PropernameHypernym ;
+                 
+                 rdfs:range :PropernameHypernym ;
+                 
+                 rdfs:subPropertyOf :hypernym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#quasiSynonym
+
+:quasiSynonym rdf:type owl:ObjectProperty ,
+                       owl:SymmetricProperty ,
+                       owl:TransitiveProperty ;
+              
+              rdfs:label "quasi-synonymy"@en ,
+                         "quasi-synonymie"@fr ;
+              
+              rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+              
+              rdfs:range :SenseAxis ;
+              
+              rdfs:domain :SenseAxis ;
+              
+              rdfs:subPropertyOf :senseAxisRelation .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#referredLexicalEntry
+
+:referredLexicalEntry rdf:type owl:FunctionalProperty ,
+                               owl:ObjectProperty ;
+                      
+                      rdfs:label "referred argument (lexical entry)"@en ,
+                                 "argument cible"@fr ;
+                      
+                      rdfs:comment "links to the lexical entry that completes the accessibility (on the linguistic level)"@en ,
+                                   "permet de faire référence à l'entrée lexicale qui complète une accessibilité (niveau linguitique)"@fr ;
+                      
+                      rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                      
+                      rdfs:domain :Accessibility ;
+                      
+                      rdfs:range :LexicalEntry .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#relativeAccessible
+
+:relativeAccessible rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:label "relative accessibility"@en ,
+                               "accessibilité par parenté"@fr ;
+                    
+                    rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                    
+                    rdfs:domain :SenseAxis ;
+                    
+                    rdfs:range :SenseAxis ;
+                    
+                    rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#rivalAccessible
+
+:rivalAccessible rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:label "rival accessibility"@en ,
+                            "accessibilité par rival"@fr ;
+                 
+                 rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                 
+                 rdfs:range :SenseAxis ;
+                 
+                 rdfs:domain :SenseAxis ;
+                 
+                 rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#secondaryHypernym
+
+:secondaryHypernym rdf:type owl:ObjectProperty ,
+                            owl:TransitiveProperty ;
+                   
+                   rdfs:label "secondary hypernym"@en ,
+                              "hypéronymie secondaire"@fr ;
+                   
+                   rdfs:comment "The secondary hypernym is betwen some supertypes that are not linked hierarchically by the hypernym (primary) relationship."@en ,
+                                "Hypéronymie secondaire entre certains supertypes."@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                   
+                   rdfs:domain :PropernameHypernym ;
+                   
+                   rdfs:range :PropernameHypernym ;
+                   
+                   rdfs:subPropertyOf :hypernym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#senseAxisRelation
+
+:senseAxisRelation rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:comment "a super-property for all relationships in the conceptual level."@en ,
+                                "propriété mère pour toutes les relations du niveau conceptuel"@fr ;
+                   
+                   rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#senseRelation
+
+:senseRelation rdf:type owl:ObjectProperty ;
+               
+               rdfs:comment "a super-property for all relationships betwen lexical entries."@en ,
+                            "propriété mère pour toutes les relations entres des entrées lexicales."@fr ;
+               
+               rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#sorting
+
+:sorting rdf:type owl:ObjectProperty ;
+         
+         rdfs:label "sorting element"@en ,
+                    "ordre de tri"@fr ;
+         
+         rdfs:comment "links to the more significant element for the sorting"@en ,
+                      "relie à l'élément significatif dans le tri (pour retrouver l'ordre lexicographique)"@fr ;
+         
+         rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+         
+         rdfs:range :ConstituantElement ;
+         
+         rdfs:domain :LexicalEntry .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#syntacticBehaviour
+
+:syntacticBehaviour rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:comment "is a super-property for all syntactic relationships (classification, accessibility and collocation)."@en ,
+                                 "sert de propriété mère à toutes les relations syntaxiques (tout ce qui est collocation, accessibility et classification)"@fr ;
+                    
+                    rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#tenantAccessible
+
+:tenantAccessible rdf:type owl:ObjectProperty ;
+                  
+                  rdfs:label "tenant accessibility"@en ,
+                             "accessibilité par locataire"@fr ;
+                  
+                  rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+                  
+                  rdfs:range :SenseAxis ;
+                  
+                  rdfs:domain :SenseAxis ;
+                  
+                  rdfs:subPropertyOf :accessible .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#terminology
+
+:terminology rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "terminology"@en ,
+                        "terminologie"@fr ;
+             
+             rdfs:comment "this relation is when the proper name is used as a terminology for a given domain"@en ,
+                          "realtion pour dire qu'un nom propre est utilisée dans la terminologie d'un domaine"@fr ;
+             
+             rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+             
+             rdfs:domain :Canonical ;
+             
+             rdfs:range :Terminology ;
+             
+             rdfs:subPropertyOf :eponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#type
+
+:type rdf:type owl:FunctionalProperty ,
+               owl:ObjectProperty ;
+      
+      rdfs:label "type"@en ,
+                 "type"@fr ;
+      
+      rdfs:comment "Tells that a Pivot is in some type of propername"@en ,
+                   "Permet de donner la typologie d'un pivot"@fr ;
+      
+      rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> ;
+      
+      rdfs:range :PropernameHypernym ;
+      
+      rdfs:domain :SenseAxis ;
+      
+      rdfs:subPropertyOf :interlingualExternalRef .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#grammaticalGender
+
+:grammaticalGender rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#grammaticalNumber
+
+:grammaticalNumber rdf:type owl:DatatypeProperty ;
+                   
+                   rdfs:subPropertyOf owl:topDataProperty .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#hasTemplate
+
+:hasTemplate rdf:type owl:DatatypeProperty ;
+             
+             rdfs:domain :Context .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#languageIdentifier
+
+:languageIdentifier rdf:type owl:DatatypeProperty ;
+                    
+                    rdfs:domain :Lexicon .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#script
+
+:script rdf:type owl:DatatypeProperty ;
+        
+        rdfs:domain :Lexicon .
+
+
+
+###  http://www.w3.org/2000/01/rdf-schema#comment
+
+rdfs:comment rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.w3.org/2000/01/rdf-schema#label
+
+rdfs:label rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.w3.org/2000/01/rdf-schema#seeAlso
+
+rdfs:seeAlso rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Accessibility
+
+:Accessibility rdf:type owl:Class ;
+               
+               rdfs:label "Accessibility"@en ,
+                          "Accessibilité"@fr ;
+               
+               rdfs:subClassOf :SubcategorizationFrame ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty :hasContext ;
+                                 owl:someValuesFrom :AccessibilityContext
+                               ] ;
+               
+               rdfs:comment "Is the accessebility on linguistic level that consists of glosing with another proper name"@en ,
+                            "Représente l'acessibilité au niveau linguistique qui consiste à faire une glose en utilisant un autre nom propre pour expliquer."@fr ;
+               
+               rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#AccessibilityContext
+
+:AccessibilityContext rdf:type owl:Class ;
+                      
+                      rdfs:label "Accessibility Context"@en ,
+                                 "contexte d'accessibilité"@fr ;
+                      
+                      rdfs:subClassOf :Context ;
+                      
+                      rdfs:comment "Context specialized in classification which links between a template and a whole or a part of another proper name"@en ,
+                                   "contexte pour former l'explication à partir du modèle et d'un autre nom propre"@fr ;
+                      
+                      rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Alias
+
+:Alias rdf:type owl:Class ;
+       
+       rdfs:label "alias"@en ,
+                  "alias"@fr ;
+       
+       rdfs:subClassOf :LexicalEntry ,
+                       :Sense ;
+       
+       rdfs:comment "alias, another way to designate the proper name"@en ,
+                    "alias, autre manière de désigner un nom propre"@fr ;
+       
+       rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#AliasCategory
+
+:AliasCategory rdf:type owl:Class ;
+               
+               rdfs:label "alias category"@en ,
+                          "catégorie d'Alias"@fr ;
+               
+               rdfs:subClassOf :Category ;
+               
+               rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Antonomasia
+
+:Antonomasia rdf:type owl:Class ;
+             
+             rdfs:label "Antonomasia"@en ,
+                        "Antonomase"@fr ;
+             
+             rdfs:subClassOf :EponymExpression ;
+             
+             rdfs:comment "Antonomasia. We use it when an common noun is called by a proper name."@en ,
+                          "Antonomase. On l'utilise quand on fait référence à un nom commun en utilsant un nom propre."@fr ;
+             
+             rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Canonical
+
+:Canonical rdf:type owl:Class ;
+           
+           rdfs:label "prolexem"@en ,
+                      "prolexème"@fr ;
+           
+           rdfs:subClassOf :LexicalEntry ,
+                           :Sense ;
+           
+           rdfs:comment "the preferred proper name to designate...."@en ,
+                        "Nom propre préféré"@fr ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Category
+
+:Category rdf:type owl:Class ;
+          
+          rdfs:label "category"@en ,
+                     "catégorie"@fr ;
+          
+          rdfs:comment "something representing a category"@en ;
+          
+          rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Classification
+
+:Classification rdf:type owl:Class ;
+                
+                rdfs:label "classification"@en ,
+                           "classification"@fr ;
+                
+                rdfs:subClassOf :SubcategorizationFrame ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasContext ;
+                                  owl:someValuesFrom :ClassifyingContext
+                                ] ;
+                
+                rdfs:comment "An element that helps for building a noun phrase that explains the proper name"@en ,
+                             "Un élément qui permet de regrouper un constituant et un modèle pour construire une phrase explicative du nom propre"@fr ;
+                
+                rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#ClassifyingContext
+
+:ClassifyingContext rdf:type owl:Class ;
+                    
+                    rdfs:label "classifying context"@en ,
+                               "contexte de classification"@fr ;
+                    
+                    rdfs:subClassOf :Context ;
+                    
+                    rdfs:comment "Context specialized in classification witch links between a template and a whole or a part of the proper name"@en ,
+                                 "contexte pour former l'explication à partir du modèle et d'une partie ou tout du nom propre"@fr ;
+                    
+                    rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#CollocationCategory
+
+:CollocationCategory rdf:type owl:Class ;
+                     
+                     rdfs:label "collocation category"@en ,
+                                "catégorie de collocation"@fr ;
+                     
+                     rdfs:subClassOf :Category ;
+                     
+                     rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#ConstituantElement
+
+:ConstituantElement rdf:type owl:Class ;
+                    
+                    rdfs:label "a constituant element"@en ,
+                               "constituant"@fr ;
+                    
+                    rdfs:comment "the whole or a part of the proper name"@en ,
+                                 "une partie du nom propre"@fr ;
+                    
+                    rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Context
+
+:Context rdf:type owl:Class ;
+         
+         rdfs:label "context"@en ,
+                    "contexte"@fr ;
+         
+         rdfs:comment "a groupment of typical words (template) appearing with the proper name"@en ;
+         
+         rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Derivative
+
+:Derivative rdf:type owl:Class ;
+            
+            rdfs:label "Derivative"@en ,
+                       "Dérivé"@fr ;
+            
+            rdfs:subClassOf :LexicalEntry ,
+                            :Sense ;
+            
+            rdfs:comment "Derived from a lexical entry"@en ,
+                         "Dérivé d'une entrée lexicale"@fr ;
+            
+            rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#DerivativeCategory
+
+:DerivativeCategory rdf:type owl:Class ;
+                    
+                    rdfs:label "derivative category"@en ,
+                               "cétégorie de dérivation"@fr ;
+                    
+                    rdfs:subClassOf :Category ;
+                    
+                    rdfs:comment "represents the category of a derivative"@en ,
+                                 "C'est la catégorie d'une dérivation"@fr ;
+                    
+                    rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#EponymExpression
+
+:EponymExpression rdf:type owl:Class ;
+                  
+                  rdfs:label "Eponym Expression"@en ,
+                             "Expression Éponyme"@fr ;
+                  
+                  rdfs:comment "Is top class for other types of eponymy and contains them"@en ,
+                               "Sert de classe mère et contient tous les types d'éyponymie"@fr ;
+                  
+                  rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Existence
+
+:Existence rdf:type owl:Class ;
+           
+           rdfs:label "Existence"@en ,
+                      "existance"@fr ;
+           
+           rdfs:comment "Top level element for representing existence"@en ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Form
+
+:Form rdf:type owl:Class ;
+      
+      rdfs:label "Form"@en ,
+                 "Forme"@fr ;
+      
+      rdfs:comment "Represents an instance of a lexical entry in the language"@en ,
+                   "Représente une instance d'une entrée lexicale dans la langue"@fr ;
+      
+      rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#FunctionalWord
+
+:FunctionalWord rdf:type owl:Class ;
+                
+                rdfs:label "funtional word"@en ,
+                           "mot fonctionnel"@fr ;
+                
+                rdfs:subClassOf :SubcategorizationFrame ;
+                
+                rdfs:comment "A word that goes with a proper name"@en ,
+                             "mot accompagnant un nom propre"@fr ;
+                
+                rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Idiom
+
+:Idiom rdf:type owl:Class ;
+       
+       rdfs:label "Idiom"@en ,
+                  "Expression Idiomatique"@fr ;
+       
+       rdfs:subClassOf :EponymExpression ;
+       
+       rdfs:comment "Idiom: In one language it may have some proper names used in fixed expressions."@en ,
+                    "Expression Idiomatique: on l'utilise quand le nom propre participe dans une phrase ou expression figée de la langue."@fr ;
+       
+       rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Lemma
+
+:Lemma rdf:type owl:Class ;
+       
+       rdfs:label "Lemma"@en ,
+                  "Lemme"@fr ;
+       
+       rdfs:subClassOf :Form ;
+       
+       rdfs:comment "lemma form of lexical entry"@en ,
+                    "Forme Lemmatique (instance privillégiée) d'une entrée lexicale."@fr ;
+       
+       rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#LexicalEntry
+
+:LexicalEntry rdf:type owl:Class ;
+              
+              rdfs:label "lexical entry"@en ,
+                         "entrée lexicale"@fr ;
+              
+              rdfs:comment "a lexical entry"@en ,
+                           "entrée lexicale"@fr ;
+              
+              rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Lexicon
+
+:Lexicon rdf:type owl:Class ;
+         
+         rdfs:label "Lexicon of a language"@en ,
+                    "Lexique d'une langue"@fr ;
+         
+         rdfs:comment "Represents a language"@en ,
+                      "une langue"@fr ;
+         
+         rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Morphology
+
+:Morphology rdf:type owl:Class ;
+            
+            rdfs:label "morphology"@en ,
+                       "morphologie"@fr ;
+            
+            rdfs:comment "Informations like gender or the number"@en ,
+                         "Informations telle que le genre et le nombre"@fr ;
+            
+            rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#PartOfSpeech
+
+:PartOfSpeech rdf:type owl:Class ;
+              
+              rdfs:label "Grammatical Category"@en ,
+                         "Catégorie Grammaticale"@fr ;
+              
+              rdfs:subClassOf :Category ;
+              
+              rdfs:comment "C'est la partie du discours, la nature d'un mot."@fr ;
+              
+              rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Phonetics
+
+:Phonetics rdf:type owl:Class ;
+           
+           rdfs:label "Phonetics"@en ,
+                      "Transcription phonétique"@fr ;
+           
+           rdfs:comment "Il est important surtout pour des mots dans d'autres langue dont on ne possède pas la transcription dans un script donné"@fr ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#PropernameHypernym
+
+:PropernameHypernym rdf:type owl:Class ;
+                    
+                    rdfs:label "Proper name hypernym"@en ,
+                               "Hypernyme du nom propre"@fr ;
+                    
+                    rdfs:subClassOf skos:Concept ;
+                    
+                    rdfs:comment "in this class we have all types and supertypes of pivots"@en ,
+                                 "Classe regroupant tous les types et supertypes de pivot."@fr ;
+                    
+                    rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#ReliabilityCode
+
+:ReliabilityCode rdf:type owl:Class ;
+                 
+                 rdfs:label "reliability code"@en ,
+                            "fréquence d'utilisation"@fr ;
+                 
+                 rdfs:comment "It's for measuring the frequency of a word (commontly used, frequently used and rarely used)."@en ,
+                              "Mesure la fréquence"@fr ;
+                 
+                 rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Sense
+
+:Sense rdf:type owl:Class ;
+       
+       rdfs:label "sense"@en ,
+                  "sens"@fr ;
+       
+       rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#SenseAxis
+
+:SenseAxis rdf:type owl:Class ;
+           
+           rdfs:label "Pivot"@en ,
+                      "Pivot"@fr ;
+           
+           rdfs:comment "This class is to represent central concept of a proper name."@en ,
+                        "correspond à pivot dans prolexbase: c'est l'élément central pour représenter le concept de nom propre"@fr ;
+           
+           rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#SubcategorizationFrame
+
+:SubcategorizationFrame rdf:type owl:Class ;
+                        
+                        rdfs:comment "A LMF concept to represent a syntactic behaviour of the proper name."@en ,
+                                     "Concept LMF pour représenter tout comportement syntaxique d'un nom propre."@fr ;
+                        
+                        rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#SynSet
+
+:SynSet rdf:type owl:Class ;
+        
+        rdfs:label "SynSet"@en ,
+                   "SynSet"@fr ;
+        
+        rdfs:comment "a collection of synomous pivots"@en ,
+                     "regroupe des pivots synonymes"@fr ,
+                     <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Template
+
+:Template rdf:type owl:Class ;
+          
+          rdfs:label "template"@en ,
+                     "modèle"@fr ;
+          
+          rdfs:comment "In a context, the template permits to fill a phrase."@en ,
+                       "dans un contexte, c'est elle qui permet de construire la phrase explicative."@fr ;
+          
+          rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Terminology
+
+:Terminology rdf:type owl:Class ;
+             
+             rdfs:label "Terminology"@en ,
+                        "Terminologie"@fr ;
+             
+             rdfs:subClassOf :EponymExpression ;
+             
+             rdfs:comment "Terminology: used when a proper name is concerned in a terminology of a given domain"@en ,
+                          "Terminologie: utilisé quand le nom propre entre en jeu dans la terminologie d'un domaine donné."@fr ;
+             
+             rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#WordForm
+
+:WordForm rdf:type owl:Class ;
+          
+          rdfs:subClassOf :Form ;
+          
+          rdfs:comment "for instances"@en ,
+                       "Contient une instence d'une entrée lexicale."@fr ;
+          
+          rdfs:isDefinedBy <http://www.univ-tours.fr/li/Prolex/Ontology> .
+
+
+
+###  http://www.w3.org/2004/02/skos/core#Concept
+
+skos:Concept rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/2004/02/skos/core#ConceptScheme
+
+skos:ConceptScheme rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Anthroponym
+
+:Anthroponym rdf:type :PropernameHypernym ,
+                      owl:NamedIndividual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Association
+
+:Association rdf:type :PropernameHypernym ,
+                      owl:NamedIndividual ;
+             
+             :primaryHypernym :Group .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Astronym
+
+:Astronym rdf:type :PropernameHypernym ,
+                   owl:NamedIndividual ;
+          
+          :primaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Building
+
+:Building rdf:type :PropernameHypernym ,
+                   owl:NamedIndividual ;
+          
+          :secondaryHypernym :Ergonym ;
+          
+          :primaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Celebrity
+
+:Celebrity rdf:type :PropernameHypernym ,
+                    owl:NamedIndividual ;
+           
+           :primaryHypernym :Individual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#City
+
+:City rdf:type :PropernameHypernym ,
+               owl:NamedIndividual ;
+      
+      :secondaryHypernym :Collective ,
+                         :Ergonym ;
+      
+      :primaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Collective
+
+:Collective rdf:type :PropernameHypernym ,
+                     owl:NamedIndividual ;
+            
+            :primaryHypernym :Anthroponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Country
+
+:Country rdf:type :PropernameHypernym ,
+                  owl:NamedIndividual ;
+         
+         :primaryHypernym :Territory .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Disaster
+
+:Disaster rdf:type :PropernameHypernym ,
+                   owl:NamedIndividual ;
+          
+          :primaryHypernym :Pragmonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Dynasty
+
+:Dynasty rdf:type :PropernameHypernym ,
+                  owl:NamedIndividual ;
+         
+         :primaryHypernym :Collective .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Ensemble
+
+:Ensemble rdf:type :PropernameHypernym ,
+                   owl:NamedIndividual ;
+          
+          :primaryHypernym :Group .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Ergonym
+
+:Ergonym rdf:type :PropernameHypernym ,
+                  owl:NamedIndividual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Ethnonym
+
+:Ethnonym rdf:type :PropernameHypernym ,
+                   owl:NamedIndividual ;
+          
+          :primaryHypernym :Collective .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Event
+
+:Event rdf:type :PropernameHypernym ,
+                owl:NamedIndividual ;
+       
+       :secondaryHypernym :Ergonym ;
+       
+       :primaryHypernym :Pragmonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Feast
+
+:Feast rdf:type :PropernameHypernym ,
+                owl:NamedIndividual ;
+       
+       :primaryHypernym :Pragmonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Firm
+
+:Firm rdf:type :PropernameHypernym ,
+               owl:NamedIndividual ;
+      
+      :primaryHypernym :Group .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#FirstName
+
+:FirstName rdf:type :PropernameHypernym ,
+                    owl:NamedIndividual ;
+           
+           :primaryHypernym :Individual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Geonym
+
+:Geonym rdf:type :PropernameHypernym ,
+                 owl:NamedIndividual ;
+        
+        :primaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Group
+
+:Group rdf:type :PropernameHypernym ,
+                owl:NamedIndividual ;
+       
+       :primaryHypernym :Collective ;
+       
+       :secondaryHypernym :Ergonym ,
+                          :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#History
+
+:History rdf:type :PropernameHypernym ,
+                  owl:NamedIndividual ;
+         
+         :secondaryHypernym :Ergonym ;
+         
+         :primaryHypernym :Pragmonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Hydronym
+
+:Hydronym rdf:type :PropernameHypernym ,
+                   owl:NamedIndividual ;
+          
+          :primaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Individual
+
+:Individual rdf:type :PropernameHypernym ,
+                     owl:NamedIndividual ;
+            
+            :primaryHypernym :Anthroponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Institution
+
+:Institution rdf:type :PropernameHypernym ,
+                      owl:NamedIndividual ;
+             
+             :primaryHypernym :Group .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Meteorology
+
+:Meteorology rdf:type :PropernameHypernym ,
+                      owl:NamedIndividual ;
+             
+             :primaryHypernym :Pragmonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Object
+
+:Object rdf:type :PropernameHypernym ,
+                 owl:NamedIndividual ;
+        
+        :primaryHypernym :Ergonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Organisation
+
+:Organisation rdf:type :PropernameHypernym ,
+                       owl:NamedIndividual ;
+              
+              :primaryHypernym :Group .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Patronymic
+
+:Patronymic rdf:type :PropernameHypernym ,
+                     owl:NamedIndividual ;
+            
+            :primaryHypernym :Individual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Pragmonym
+
+:Pragmonym rdf:type :PropernameHypernym ,
+                    owl:NamedIndividual ;
+           
+           :secondaryHypernym :Ergonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Product
+
+:Product rdf:type :PropernameHypernym ,
+                  owl:NamedIndividual ;
+         
+         :primaryHypernym :Ergonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#PropernameHypernymeScheme
+
+:PropernameHypernymeScheme rdf:type owl:NamedIndividual ,
+                                    skos:ConceptScheme ;
+                           
+                           skos:hasTopConcept :Anthroponym ,
+                                              :Ergonym ,
+                                              :Pragmonym ,
+                                              :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#PseudoAnthroponym
+
+:PseudoAnthroponym rdf:type :PropernameHypernym ,
+                            owl:NamedIndividual ;
+                   
+                   :primaryHypernym :Individual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Region
+
+:Region rdf:type :PropernameHypernym ,
+                 owl:NamedIndividual ;
+        
+        :primaryHypernym :Territory .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Supranational
+
+:Supranational rdf:type :PropernameHypernym ,
+                        owl:NamedIndividual ;
+               
+               :primaryHypernym :Territory .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Territory
+
+:Territory rdf:type :PropernameHypernym ,
+                    owl:NamedIndividual ;
+           
+           :secondaryHypernym :Collective ;
+           
+           :primaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Thought
+
+:Thought rdf:type :PropernameHypernym ,
+                  owl:NamedIndividual ;
+         
+         :primaryHypernym :Ergonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Toponym
+
+:Toponym rdf:type :PropernameHypernym ,
+                  owl:NamedIndividual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Vessel
+
+:Vessel rdf:type :PropernameHypernym ,
+                 owl:NamedIndividual ;
+        
+        :secondaryHypernym :Collective ;
+        
+        :primaryHypernym :Ergonym ;
+        
+        :secondaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Way
+
+:Way rdf:type :PropernameHypernym ,
+              owl:NamedIndividual ;
+     
+     :secondaryHypernym :Ergonym ;
+     
+     :primaryHypernym :Toponym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#Work
+
+:Work rdf:type :PropernameHypernym ,
+               owl:NamedIndividual ;
+      
+      :primaryHypernym :Ergonym .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#fictitiousExistence
+
+:fictitiousExistence rdf:type :Existence ,
+                              owl:NamedIndividual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#historicalExistence
+
+:historicalExistence rdf:type :Existence ,
+                              owl:NamedIndividual .
+
+
+
+###  http://www.univ-tours.fr/li/Prolex/Ontology#religiousExistence
+
+:religiousExistence rdf:type :Existence ,
+                             owl:NamedIndividual .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+

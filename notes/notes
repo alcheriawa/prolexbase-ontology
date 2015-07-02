@@ -1,0 +1,49 @@
+SynSet: 
+  il y'a des cycles de canonique (deux pivots dont chacun est désigné comme canonique de l'autre)
+  Vérifier s'il y a des dublons dur le pivot à cause du SynSet: oui il y a des doublons à cause du SynSet: on retrouve 75917 alors qu'on devait en avoir 73365
+  last mapping: jointure vue et table
+language: scénario de la traduction entre langues
+  faire le lien entre la table langue et la table prolexeme en rajoutant une colonne langue dans prolexeme
+  On a aussi le choix de dupliquer les informations de la langue  chanque fois qu'on le lie au prolexeme
+  - on peut aussi créer une vue du prolexème dans laquelle on ajoute un champ langue
+ 
+- Derivative-Derivative (c'est fait. Remarque: il n y pas de dérivé de dérivé dans la base)
+- Classification: pour alias: il n'y a pas de classification pour l'alias
+- Accessibility: la requête SQL esttrop lente
+- Aliasization: J'ai créee les alias à partir d'aliasization_result_fra mais je ne peux pas faire la relation isAliasOf
+- Derivation: La table derivation_result_fra est vide
+- Les label dans les deux langues: c'est dû à la contraction permise par Turtle et qu'apparemment Ontop ne prend pas en compte. l s'agit d'utiliser une seul rr:predicateObjectMap avec un seul rr:predicate et plusieurs rr:objectMap. Puisqu'Ontop ne le prend pas en charge, mieux vaut utiliser autant de rr:predicateObjectMap que nécessaires.
+
+Manques:
+  - Derivative-Derivative (c'est fait. Remarque: il n y pas de dérivé de dérivé dans la base)
+  - Accessibility
+  - Canonical-Accessibility
+  - Les label dans les deux langues: c'est dû à la contraction permise par Turtle et qu'apparemment Ontop ne prend pas en compte. l s'agit d'utiliser une seul rr:predicateObjectMap avec un seul rr:predicate et plusieurs rr:objectMap. Puisqu'Ontop ne le prend pas en charge, mieux vaut utiliser autant de rr:predicateObjectMap que nécessaires.
+Modifications:
+  - enlever ; :hasLexicon prolex:language/French
+  - déplacement de canonicPivot sous member
+  - déplacement de isAcessibilityOf sous syntacticBehaviour
+  - aliasisation dans db_prefs
+  - supression de relations inverses d'accessible
+  - renommage de headquatersAccessible en headquartersAccessible
+  - ajouter l'id dans l'URI de DerivativeCategory
+
+Check List:
+  - SynSet et canonicPivot: 				done
+  - dérivé de dérivative: 				done
+  - classification pour Alias:				not exists
+  - accessibilité:					done
+  - accessibilité pour Alias:				not exists
+  - accessibilité pour Canonical:			done
+  - Lemma: 						done
+  - WordForm: 						done
+  - rdfs:label: 					il manque pour CollocationCategory
+  - aliasization_result:				done
+  - derivation_result:					done
+  - inverses d'accessible (supprimer):			done
+  - renommer headquatersAccessible:			done
+  - mappings d'accessible en plusieurs:		
+  - mappings de quasiSynonym en plusieurs:		
+  - ajouter l'id dans l'URI de DerivativeCategory:	done
+  - ajouter french à certains mappingIds
+  - explosition du mapping de prolexeme sans fréquence	

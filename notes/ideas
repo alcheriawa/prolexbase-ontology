@@ -1,0 +1,86 @@
+1°) Pour retrouver les lemmas à partir de la table instance:
+    Sortir les labels identiques aux prolexemes, alias et derivatives en utilisant de requêtes du genre:
+      select i.label_instance, p.LABEL_PROLEXEME, i.NUM_MORPHOLOGY from instance_fra i, prolexeme_fra p where p.NUM_PROLEXEME=i.NUM_PROLEXEME AND i.LABEL_INSTANCE=p.LABEL_PROLEXEME
+    On peur alors avoir un mapping comme celui ci:
+    <LemmaOfCanonicalBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT NUM_INSTANCE, LABEL_INSTANCE from instance_fra i, prolexeme_fra p where p.NUM_PROLEXEME=i.NUM_PROLEXEME AND i.LABEL_INSTANCE=p.LABEL_PROLEXEME"""] ;
+	rr:subjectMap <instenceIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:object prolex:Lemma
+	] .
+	
+    <WordFormOfCanonicalBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT NUM_INSTANCE, LABEL_INSTANCE from instance_fra i, prolexeme_fra p where p.NUM_PROLEXEME=i.NUM_PROLEXEME AND i.LABEL_INSTANCE=p.LABEL_PROLEXEME"""] ;
+	rr:subjectMap <instenceIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:object prolex:WordForm
+	] .
+	
+    <FormBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT NUM_INSTANCE, LABEL_INSTANCE, ENG_POS FROM instance_fra i, part_of_speech p WHERE p.NUM_POS=i.NUM_POS"""] ;
+	rr:subjectMap <instenceIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label ;
+		rr:objectMap  [ rr:column 'LABEL_INSTANCE']
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:hasPartOfSpeech ;
+		rr:objectMap  <GrammaticalCategoryIRI>
+	] .
+	
+2°) Origine du problème de duplication:
+  Remarques: 
+  -	Dans le mapping des instances nous avons deux mappings: l'un pour Lemma et l'autre pour WordForm. Dans chacun de ces mapping on précise le type avec rdf:type. En faisant la requête SPARQL il a dupliqué les données. En regardant dans les log la réécriture de requête, on se rend compte qu'il sélectionne les lemmas et wordforms, puis il ajoute les résultats issus de la relation isInstanceOf.
+  -	Cette fois ci en précisant la classe Form dans le URI template des instances (rr:class prolex:Form) il n'y a pas de duplication et la réécritue de requête ne concerne que le mapping qui lie les instances aux morphologies. Pourquoi?
+  -	En supprimant le mapping liant les instances aux morphologies on retrouve la duplication et dans le réécritue de la requête tous les mapping interviennent.
+
+3°) l'URI Encode se fait dans la réécriture de la requête en SQL. Voici un exemple:
+    SELECT 
+   1 AS `xQuestType`, NULL AS `xLang`, CONCAT('http://www.univ-tours.fr/li/Prolex/data/instence/fra/', REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CAST(QVIEW1.`NUM_INSTANCE` AS CHAR(8000) CHARACTER SET utf8),' ', '%20'),'!', '%21'),'@', '%40'),'#', '%23'),'$', '%24'),'&', '%26'),'*', '%42'), '(', '%28'), ')', '%29'), '[', '%5B'), ']', '%5D'), ',', '%2C'), ';', '%3B'), ':', '%3A'), '?', '%3F'), '=', '%3D'), '+', '%2B'), '''', '%22'), '/', '%2F'), '-', REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(QVIEW1.`LABEL_INSTANCE`,' ', '%20'),'!', '%21'),'@', '%40'),'#', '%23'),'$', '%24'),'&', '%26'),'*', '%42'), '(', '%28'), ')', '%29'), '[', '%5B'), ']', '%5D'), ',', '%2C'), ';', '%3B'), ':', '%3A'), '?', '%3F'), '=', '%3D'), '+', '%2B'), '''', '%22'), '/', '%2F')) AS `x`
+  FROM 
+  instance_fra QVIEW1,
+  morphology_fra QVIEW2
+  WHERE 
+  (QVIEW1.`NUM_MORPHOLOGY` = QVIEW2.`NUM_MORPHOLOGY`) AND
+  QVIEW1.`LABEL_INSTANCE` IS NOT NULL AND
+  QVIEW1.`NUM_INSTANCE` IS NOT NULL
+  
+  Est-il utile de définir une fonction URL encode? (une recherche sur Google de MySQL encode fonction retourne des résultats intéressants)
+  
+4°) Duplication au niveau des entrées lexicales:
+  derivative: on a le bon nombre
+  alias: pas dupliqué
+  canonical: dupliqué à un ordre supérieur à 3 (environ 4.7)
+  
+5°) Origine des duplications:
+    -	si la classe est ajouté à l'URI template, alors celle-ci est ajoutée à chaque fois que cet URI est utilisé comme sujet
+    -	si l'URI est utilisé comme objet alors on ajoute la classe si le range le précise.
+    
+6°) Pour résoudre le problème du SynSet on crée une vue pour récupérer tous les éléments canoniques:
+     -requête de création de vue: CREATE VIEW canonic AS SELECT s.NUM_CANONICAL_PIVOT, s.NUM_SYNONYMOUS_PIVOT FROM synonymy s WHERE s.NUM_CANONICAL_PIVOT NOT IN (SELECT NUM_SYNONYMOUS_PIVOT FROM synonymy)
+     -On crée ensuite un mapping pour les vraie canoniques. On les retrouve en puisant les NUM_CANONICAL_PIVOT de la vue.
+    -	Puis un autre mapping pour les fausses canoniques. On les retrouve en faisant une jointure dans la table synonymy à elle même avec la requête suivantes: 
+      SELECT canon.NUM_CANONICAL_PIVOT AS NUM_SYNSET, synon.NUM_SYNONYMOUS_PIVOT AS NUM_PIVOT FROM synonymy canon, synonymy synon WHERE canon.NUM_SYNONYMOUS_PIVOT=synon.NUM_CANONICAL_PIVOT
+      
+7°) Les cycles dans les synset et synonymes:
+  -Un cycle est un paire de pivots donc chacun est marqué comme le synonyme canonique de l'autre
+  - pour les retrouver on lance la requête suivante:
+      SELECT s1.NUM_CANONICAL_PIVOT, s1.NUM_SYNONYMOUS_PIVOT FROM synonymy s1, synonymy s2 WHERE s1.NUM_CANONICAL_PIVOT=s2.NUM_SYNONYMOUS_PIVOT AND s1.NUM_SYNONYMOUS_PIVOT=s2.NUM_CANONICAL_PIVOT
+  - on en retrouve six (06) dans la base de données.
+ 
+8°) Accessiblité linguistique:
+  - est ce que num_accessibility permet de retrouver le referredLexicalEntry?
+  - Pourquoi ne pas utiliser deux noeuds anonymes
+
+9°) Ajouter les instances d'AliasizationResult et DerivationResult. On pourra récupérer le prolexème et le pivot à travers une seule instance.
+
+10°) Décider si les ProperNameHypernym, Existence, Category, ... seront dans l'espace de nommage de l'ontologie ou dans les données.

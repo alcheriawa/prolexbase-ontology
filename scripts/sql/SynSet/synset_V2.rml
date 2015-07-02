@@ -1,0 +1,56 @@
+@prefix prolex: <http://www.univ-tours.fr/li/Prolex/Ontology#> .
+@prefix : <http://www.univ-tours.fr/li/Prolex/data/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@base <http://www.univ-tours.fr/li/Prolex/Mapping> .
+
+<SynSetIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/synset/{NUM_PIVOT}" .
+
+<PivotIRI>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/pivot/{NUM_PIVOT}" .
+
+<PivotIRI2>
+	rr:termType rr:IRI ;
+	rr:template "http://www.univ-tours.fr/li/Prolex/data/pivot/{NUM_PIVOT2}" .
+
+#Mapping pour créer les SynSet et les lier à leur canonic
+#Cette manipulation suppose que la vue canonic est déja crée.
+<SynSetBody>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT DISTINCT(NUM_CANONICAL_PIVOT) AS NUM_PIVOT FROM canonic"""] ;
+	rr:subjectMap <SynSetIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:object  prolex:SynSet
+	] ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:canonicPivot ;
+		rr:object  <PivotIRI>
+	] .
+	
+<SynSet-Member1Body>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT NUM_CANONICAL_PIVOT AS NUM_PIVOT, NUM_SYNONYMOUS_PIVOT AS NUM_PIVOT2 FROM canonic"""] ;
+	rr:subjectMap <SynSetIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:member ;
+		rr:objectMap  <PivotIRI2>
+	] .
+	
+<SynSet-Member2Body>
+	a rr:TriplesMap ;
+	rr:logicalTable [rr:sqlQuery """SELECT canon.NUM_CANONICAL_PIVOT AS NUM_PIVOT, synon.NUM_SYNONYMOUS_PIVOT AS NUM_PIVOT2 FROM synonymy canon, synonymy synon WHERE canon.NUM_SYNONYMOUS_PIVOT=synon.NUM_CANONICAL_PIVOT"""] ;
+	rr:subjectMap <SynSetIRI> ;
+	
+	rr:predicateObjectMap [
+		rr:predicate prolex:member ;
+		rr:objectMap  <PivotIRI2>
+	] .
